@@ -1,10 +1,7 @@
 import 'dart:io';
 
 import 'package:flutter/cupertino.dart';
-import 'package:flutter_app/animation/ScaleRoute.dart';
-import 'package:flutter_app/pages/SignInPage.dart';
 import 'package:http/http.dart' as http;
-import 'package:toast/toast.dart';
 
 class SignupApi {
   Future hitSignup(
@@ -31,12 +28,6 @@ class SignupApi {
 
     var response = await request.send();
     final int statusCode = response.statusCode;
-
-    if (statusCode != 200) {
-      Toast.show("Oop's something went wrong", context,
-          duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
-    } else {
-      Navigator.push(context, ScaleRoute(page: SignInPage()));
-    }
+    return statusCode;
   }
 }

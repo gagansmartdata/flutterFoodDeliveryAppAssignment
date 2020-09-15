@@ -31,7 +31,7 @@ class _SignInPageState extends State<SignInPage> {
         width: double.infinity,
         height: double.infinity,
         color: Colors.white70,
-        child: Column(
+        child: ListView(
           children: <Widget>[
             Flexible(
               flex: 8,
@@ -127,8 +127,8 @@ class _SignInPageState extends State<SignInPage> {
                 ],
               ),
             ),
-            Flexible(
-              flex: 1,
+            Container(
+                margin: const EdgeInsets.only(top: 10.0),
               child: Align(
                 alignment: Alignment.bottomCenter,
                 child: Row(
