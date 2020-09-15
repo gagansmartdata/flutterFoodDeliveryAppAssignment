@@ -248,7 +248,7 @@ class SignInButtonWidget extends StatelessWidget {
                 if (response.statusCode == 200) {
                   Navigator.push(context, ScaleRoute(page: HomePage()));
                 } else {
-                  Toast.show("Incorrect username and password", context,
+                  Toast.show(response.message, context,
                       duration: Toast.LENGTH_SHORT, gravity: Toast.BOTTOM);
                 }
               }
