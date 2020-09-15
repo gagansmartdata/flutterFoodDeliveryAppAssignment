@@ -1,14 +1,40 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_app/animation/ScaleRoute.dart';
 import 'package:flutter_app/pages/SignInPage.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
+import 'package:flutter_app/webservices/Api.dart';
+import 'package:flutter_app/webservices/SignupApi.dart';
+import 'package:flutter_app/widgets/ImageView.dart';
+import 'package:image_picker/image_picker.dart';
 
-class SignUpPage extends StatelessWidget {
+class SignUpPage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+TextEditingController firstNameController = new TextEditingController();
+TextEditingController lastNameController = new TextEditingController();
+TextEditingController emailController = new TextEditingController();
+TextEditingController phoneController = new TextEditingController();
+TextEditingController passwordController = new TextEditingController();
+File _image;
+
+class _MyHomePageState extends State<SignUpPage> {
+  final picker = ImagePicker();
+
   @override
   Widget build(BuildContext context) {
     String defaultFontFamily = 'Roboto-Light.ttf';
     double defaultFontSize = 14;
     double defaultIconSize = 17;
+
+    Future getImage() async {
+      final pickedFile = await picker.getImage(source: ImageSource.camera);
+      setState(() {
+        _image = File(pickedFile.path);
+      });
+    }
 
     return Scaffold(
       body: Container(
@@ -33,20 +59,35 @@ class SignUpPage extends StatelessWidget {
               ),
             ),
             Flexible(
-              flex: 15,
+              flex: 10,
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: <Widget>[
                   Container(
-                    width: 230,
-                    height: 100,
-                    alignment: Alignment.center,
-                    child: Image.asset(
-                      "assets/images/menus/ic_food_express.png",
+                    width: 155,
+                    height: 155,
+                    decoration: new BoxDecoration(
+                      color: Colors.white,
+                      shape: BoxShape.circle,
                     ),
+                    child: _image == null
+                        ? ImageView(
+                            path: "ic_account",
+                            fit: BoxFit.cover,
+                            circleCrop: true,
+                            height: 155,
+                            width: 155,
+                          )
+                        : ImageView(
+                            file: _image,
+                            fit: BoxFit.cover,
+                            circleCrop: true,
+                            height: 155,
+                            width: 155,
+                          ),
                   ),
                   SizedBox(
-                    height: 15,
+                    height: 25,
                   ),
                   Row(
                     children: <Widget>[
@@ -54,6 +95,7 @@ class SignUpPage extends StatelessWidget {
                         flex: 1,
                         child: TextField(
                           showCursor: true,
+                          controller: firstNameController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius:
@@ -81,6 +123,7 @@ class SignUpPage extends StatelessWidget {
                         flex: 1,
                         child: TextField(
                           showCursor: true,
+                          controller: lastNameController,
                           decoration: InputDecoration(
                             border: OutlineInputBorder(
                               borderRadius:
@@ -108,6 +151,7 @@ class SignUpPage extends StatelessWidget {
                   ),
                   TextField(
                     showCursor: true,
+                    controller: phoneController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -135,6 +179,7 @@ class SignUpPage extends StatelessWidget {
                   ),
                   TextField(
                     showCursor: true,
+                    controller: emailController,
                     decoration: InputDecoration(
                       border: OutlineInputBorder(
                         borderRadius: BorderRadius.all(Radius.circular(10.0)),
@@ -145,7 +190,7 @@ class SignUpPage extends StatelessWidget {
                       ),
                       filled: true,
                       prefixIcon: Icon(
-                        Icons.code,
+                        Icons.email,
                         color: Color(0xFF666666),
                         size: defaultIconSize,
                       ),
@@ -155,33 +200,40 @@ class SignUpPage extends StatelessWidget {
                         fontFamily: defaultFontFamily,
                         fontSize: defaultFontSize,
                       ),
-                      hintText: "Invitation Code",
+                      hintText: "Email",
                     ),
                   ),
                   SizedBox(
                     height: 10,
                   ),
-                  Container(
-                      width: double.infinity,
-                      child: Row(
-                        children: <Widget>[
-                          Icon(
-                            Icons.info_outline,
-                            color: Color(0xFF666666),
-                            size: defaultIconSize,
-                          ),
-                          Text(
-                            " Leave empty if you don't have Invitation Code",
-                            style: TextStyle(
-                              color: Color(0xFF666666),
-                              fontFamily: defaultFontFamily,
-                              fontSize: defaultFontSize,
-                              fontStyle: FontStyle.normal,
-                            ),
-                            textAlign: TextAlign.left,
-                          ),
-                        ],
-                      )),
+                  TextField(
+                    showCursor: true,
+                    controller: passwordController,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                        borderRadius: BorderRadius.all(Radius.circular(10.0)),
+                        borderSide: BorderSide(
+                          width: 0,
+                          style: BorderStyle.none,
+                        ),
+                      ),
+                      filled: true,
+                      prefixIcon: Icon(
+                        Icons.lock,
+                        color: Color(0xFF666666),
+                        size: defaultIconSize,
+                      ),
+                      fillColor: Color(0xFFF2F3F5),
+                      hintStyle: TextStyle(
+                          color: Color(0xFF666666),
+                          fontFamily: defaultFontFamily,
+                          fontSize: defaultFontSize),
+                      hintText: "Password",
+                    ),
+                  ),
+                  SizedBox(
+                    height: 10,
+                  ),
                   SizedBox(
                     height: 15,
                   ),
@@ -231,6 +283,11 @@ class SignUpPage extends StatelessWidget {
           ],
         ),
       ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: getImage,
+        tooltip: 'Pick Image',
+        child: Icon(Icons.add_a_photo),
+      ),
     );
   }
 }
@@ -272,8 +329,19 @@ class SignInButtonWidget extends StatelessWidget {
                   fontFamily: "WorkSansBold"),
             ),
           ),
-          onPressed: () => {}),
+          onPressed: () async {
+            SignupApi signupApi = new SignupApi();
+            signupApi.hitSignup(
+                _image,
+                Api.BASEURL + Api.signup,
+                firstNameController.text,
+                lastNameController.text,
+                emailController.text,
+                passwordController.text,
+                "4",
+                phoneController.text,
+                context);
+          }),
     );
   }
 }
-
