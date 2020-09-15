@@ -159,7 +159,7 @@ class _SignInPageState extends State<SignInPage> {
                         child: Text(
                           "Sign Up",
                           style: TextStyle(
-                            color: Color(0xFFf7418c),
+                            color: Color(int.parse("0xff0071AF")),
                             fontFamily: defaultFontFamily,
                             fontSize: defaultFontSize,
                             fontStyle: FontStyle.normal,
@@ -204,22 +204,22 @@ class SignInButtonWidget extends StatelessWidget {
         borderRadius: BorderRadius.all(Radius.circular(5.0)),
         boxShadow: <BoxShadow>[
           BoxShadow(
-            color: Color(0xFFfbab66),
+            color: Color(int.parse("0xff0071AF")),
           ),
           BoxShadow(
-            color: Color(0xFFf7418c),
+            color: Color(int.parse("0xff00A16C")),
           ),
         ],
         gradient: new LinearGradient(
-            colors: [Color(0xFFf7418c), Color(0xFFfbab66)],
-            begin: const FractionalOffset(0.2, 0.2),
+            colors: [Color(int.parse("0xff0071AF")),Color(int.parse("0xff00A16C"))],
+            begin: const FractionalOffset(0.4, 0.4),
             end: const FractionalOffset(1.0, 1.0),
             stops: [0.0, 1.0],
             tileMode: TileMode.clamp),
       ),
       child: MaterialButton(
           highlightColor: Colors.transparent,
-          splashColor: Color(0xFFf7418c),
+          splashColor: Color(int.parse("0xff0071AF")),
           //shape: RoundedRectangleBorder(borderRadius: BorderRadius.all(Radius.circular(5.0))),
           child: Padding(
             padding:
