@@ -91,12 +91,7 @@ class _SignInPageState extends State<SignInPage> {
                       ),
                       filled: true,
                       prefixIcon: Icon(
-                        Icons.lock_outline,
-                        color: Color(0xFF666666),
-                        size: defaultIconSize,
-                      ),
-                      suffixIcon: Icon(
-                        Icons.remove_red_eye,
+                        Icons.lock,
                         color: Color(0xFF666666),
                         size: defaultIconSize,
                       ),
