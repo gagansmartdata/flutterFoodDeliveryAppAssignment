@@ -41,7 +41,6 @@ Future<CategoryListResponse> createCategoryListApi(String url, BuildContext cont
     if (statusCode < 200 || statusCode > 400 || json == null) {
       Toast.show("Invalid Request", context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
     }
-    Toast.show(response.body, context, duration: Toast.LENGTH_SHORT, gravity:  Toast.BOTTOM);
     return CategoryListResponse.fromJson(json.decode(response.body));
   });
 }
